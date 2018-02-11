@@ -1,0 +1,15 @@
+---
+title: "cat analytics"
+author: "Steve Simon"
+date: "February 11, 2018"
+output: html_document
+---
+
+```{r read-text}
+path <- "~/text-mining-examples/data/"
+filename <- "cat-in-the-hat.txt"
+
+cat_in_the_hat <- readLines(paste0(path,filename))
+head(cat_in_the_hat)
+grep("said", cat_in_the_hat, value=TRUE)
+```

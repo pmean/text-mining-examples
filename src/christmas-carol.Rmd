@@ -1,0 +1,25 @@
+---
+title: "Christmas Carol analysis"
+author: "Steve Simon"
+date: "February 11, 2018"
+output: html_document
+---
+
+```{r read-text}
+filename <- "https://www.gutenberg.org/files/24022/24022-0.txt"
+cc_raw_text <- readLines(filename)
+head(cc_raw_text)
+start_string <- "*** START OF THIS PROJECT GUTENBERG EBOOK"
+end_string <- "*** END OF THIS PROJECT GUTENBERG EBOOK"
+start_line <- grep(start_string, cc_raw_text, fixed=TRUE)
+end_line <- grep(end_string, cc_raw_text, fixed=TRUE)
+cc_raw_text[start_line]
+cc_raw_text[end_line]
+cc_trimmed_text <- cc_raw_text[(start_line+1):(end_line-1)]
+```
+
+```{r pre-processing}
+library(tidyverse)
+library(tidytext)
+library(sentimentr)
+```
