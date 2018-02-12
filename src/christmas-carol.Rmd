@@ -5,21 +5,66 @@ date: "February 11, 2018"
 output: html_document
 ---
 
-```{r read-text}
-filename <- "https://www.gutenberg.org/files/24022/24022-0.txt"
-cc_raw_text <- readLines(filename)
-head(cc_raw_text)
-start_string <- "*** START OF THIS PROJECT GUTENBERG EBOOK"
-end_string <- "*** END OF THIS PROJECT GUTENBERG EBOOK"
-start_line <- grep(start_string, cc_raw_text, fixed=TRUE)
-end_line <- grep(end_string, cc_raw_text, fixed=TRUE)
-cc_raw_text[start_line]
-cc_raw_text[end_line]
-cc_trimmed_text <- cc_raw_text[(start_line+1):(end_line-1)]
-```
-
 ```{r pre-processing}
 library(tidyverse)
 library(tidytext)
 library(sentimentr)
+```
+
+```{r read-text}
+trim_introduction <- function(f, verbose=TRUE) {
+  start_string <- "*** START OF THIS PROJECT GUTENBERG EBOOK"
+  start_line <- grep(start_string, cc_raw_text, fixed=TRUE)
+  if (verbose) print(cc_raw_text[start_line])
+  return(f[-(1:start_line[1])])
+}
+trim_end_comments <- function(f, verbose=TRUE) {
+  end_string <- "*** END OF THIS PROJECT GUTENBERG EBOOK"
+  end_line <- grep(end_string, cc_raw_text, fixed=TRUE)
+  n <- length(f)
+  if (verbose) print(cc_raw_text[end_line])
+  return(f[-(end_line:n)])
+}
+trim_duplicate_blank_lines <- function(f, verbose=TRUE) {
+  n <- length(f)
+  consecutive_blank_lines <- f[-n]=="" & f[-1]==""
+  if (verbose) print(which(consecutive_blank_lines))
+  return(f[!consecutive_blank_lines])
+}
+
+filename <- "https://www.gutenberg.org/files/24022/24022-0.txt"
+cc_raw_text <- readLines(filename)
+cc_raw_text                            %>%
+  trim_introduction                    %>%
+  trim_end_comments                    %>%
+  trim_duplicate_blank_lines           -> cc_trimmed_text
+n <- length(cc_trimmed_text)
+i <- sample(100:(n-100), 1)
+head(cc_trimmed_text, 99)
+cc_trimmed_text[i:(i+99)]
+tail(cc_trimmed_text, 99)
+```
+
+```{r tokenize}
+cc_trimmed_text                        %>%
+  tibble(line=.)                       %>%
+  unnest_tokens(
+    input = "line",
+    output = "para",
+    token="paragraphs")                -> cc_paragraphs
+sample_n(cc_paragraphs, 99)
+cc_paragraphs                          %>%
+  unnest_tokens(
+    input = "para",
+    output = "word",
+    token = "words")                   %>%
+  anti_join(stop_words)                %>%
+  count(word, sort=TRUE)               -> cc_words
+cc_words
+library(wordcloud)
+wordcloud(cc_words$word, cc_words$n, max.words=99)
+```
+
+```{r save-everything}
+save.image("~/text-mining-examples/data/christmas-carol.RData")
 ```
