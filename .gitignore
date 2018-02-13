@@ -3,3 +3,4 @@
 *.RData
 *.Rproj
 data/cat-in-the-hat.txt
+doc/r-presentation.pdf

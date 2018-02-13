@@ -13,17 +13,22 @@ library(sentimentr)
 
 ```{r read-text}
 trim_introduction <- function(f, verbose=TRUE) {
-  start_string <- "*** START OF THIS PROJECT GUTENBERG EBOOK"
-  start_line <- grep(start_string, cc_raw_text, fixed=TRUE)
-  if (verbose) print(cc_raw_text[start_line])
-  return(f[-(1:start_line[1])])
+  # ^ and $ tell you that the string must start and end the line.
+  # In other words, nothing else besides STAVE ONE.
+  start_string <- "^STAVE ONE$"
+  start_line <- grep(start_string, f)
+  n <- length(f)
+  if (verbose) print(f[start_line])
+  if (length(start_line)!=1) return(f)
+  return(f[start_line:n])
 }
 trim_end_comments <- function(f, verbose=TRUE) {
-  end_string <- "*** END OF THIS PROJECT GUTENBERG EBOOK"
-  end_line <- grep(end_string, cc_raw_text, fixed=TRUE)
+  end_string <- "Tiny Tim observed, God bless Us, Every One!"
+  end_line <- grep(end_string, f)
   n <- length(f)
-  if (verbose) print(cc_raw_text[end_line])
-  return(f[-(end_line:n)])
+  if (verbose) print(f[end_line])
+  if (length(end_line)!=1) return(f)
+  return(f[1:end_line])
 }
 trim_duplicate_blank_lines <- function(f, verbose=TRUE) {
   n <- length(f)
@@ -40,9 +45,9 @@ cc_raw_text                            %>%
   trim_duplicate_blank_lines           -> cc_trimmed_text
 n <- length(cc_trimmed_text)
 i <- sample(100:(n-100), 1)
-head(cc_trimmed_text, 99)
-cc_trimmed_text[i:(i+99)]
-tail(cc_trimmed_text, 99)
+head(cc_trimmed_text, 19)
+cc_trimmed_text[i:(i+19)]
+tail(cc_trimmed_text, 19)
 ```
 
 ```{r tokenize}
@@ -52,7 +57,6 @@ cc_trimmed_text                        %>%
     input = "line",
     output = "para",
     token="paragraphs")                -> cc_paragraphs
-sample_n(cc_paragraphs, 99)
 cc_paragraphs                          %>%
   unnest_tokens(
     input = "para",
@@ -63,6 +67,27 @@ cc_paragraphs                          %>%
 cc_words
 library(wordcloud)
 wordcloud(cc_words$word, cc_words$n, max.words=99)
+```
+
+```{r sentiment, fig.height=9}
+cc_sentiment <- sentiment_by(cc_paragraphs$para)
+
+stave_numbers <- grep("^stave", cc_paragraphs$para)
+stave_text <- c(
+  "Jacob Marley", 
+  "Ghost of Christmas Past",
+  "Ghost of Christmas Present",
+  "Ghost of Christmas Yet To Be",
+  "The next morning")
+stave_labels <- data.frame(x=stave_numbers, y=-0.5, text=stave_text)
+cc_sentiment                            %>%
+  ggplot(aes(element_id, ave_sentiment)) +
+    scale_x_reverse()                    +
+    coord_flip()                         +
+    geom_point(color="gray")             +
+    geom_smooth(span = 0.1, se = FALSE)  +
+    geom_label(data=stave_labels, aes(x, y, label=text)) 
+  
 ```
 
 ```{r save-everything}
