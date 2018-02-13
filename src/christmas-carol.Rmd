@@ -38,7 +38,8 @@ trim_duplicate_blank_lines <- function(f, verbose=TRUE) {
 }
 
 filename <- "https://www.gutenberg.org/files/24022/24022-0.txt"
-cc_raw_text <- readLines(filename)
+# cc_raw_text <- readLines(filename)
+cc_raw_text <- readLines("~/text-mining-examples/data/24022-0.txt")
 cc_raw_text                            %>%
   trim_introduction                    %>%
   trim_end_comments                    %>%
@@ -74,11 +75,11 @@ cc_sentiment <- sentiment_by(cc_paragraphs$para)
 
 stave_numbers <- grep("^stave", cc_paragraphs$para)
 stave_text <- c(
-  "Jacob Marley", 
-  "Ghost of Christmas Past",
-  "Ghost of Christmas Present",
-  "Ghost of Christmas Yet To Be",
-  "The next morning")
+  "Stave 1-Marley's Ghost", 
+  "Stave 2-The First of the Three Spirits",
+  "Stave 3-The Second of the Three Spirits",
+  "Stave 4-The Last of the Spirits",
+  "Stave 5-The End of It")
 stave_labels <- data.frame(x=stave_numbers, y=-0.5, text=stave_text)
 cc_sentiment                            %>%
   ggplot(aes(element_id, ave_sentiment)) +
@@ -86,7 +87,7 @@ cc_sentiment                            %>%
     coord_flip()                         +
     geom_point(color="gray")             +
     geom_smooth(span = 0.1, se = FALSE)  +
-    geom_label(data=stave_labels, aes(x, y, label=text)) 
+    geom_label(data=stave_labels, aes(x, y, label=text), vjust=1) 
   
 ```
 
