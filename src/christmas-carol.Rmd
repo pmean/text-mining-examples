@@ -83,11 +83,16 @@ stave_text <- c(
 stave_labels <- data.frame(x=stave_numbers, y=-0.5, text=stave_text)
 cc_sentiment                            %>%
   ggplot(aes(element_id, ave_sentiment)) +
-    scale_x_reverse()                    +
+    scale_x_reverse(
+      breaks=stave_labels$x,
+      minor=NULL)                        +
+    scale_y_continuous(position="right") +
+    xlab("Paragraph")                    +
+    ylab("Sentiment")                    +
     coord_flip()                         +
     geom_point(color="gray")             +
     geom_smooth(span = 0.1, se = FALSE)  +
-    geom_label(data=stave_labels, aes(x, y, label=text), vjust=1) 
+    geom_text(data=stave_labels, aes(x, y, label=text), vjust=1) 
   
 ```
 
