@@ -6,9 +6,12 @@ output: html_document
 ---
 
 ```{r pre-processing}
-library(tidyverse)
-library(tidytext)
+library(dplyr)
+library(magrittr)
 library(sentimentr)
+library(SnowballC)
+library(tidytext)
+library(tidyverse)
 ```
 
 ```{r read-text}
@@ -58,41 +61,57 @@ cc_trimmed_text                        %>%
     input = "line",
     output = "para",
     token="paragraphs")                -> cc_paragraphs
+cc_paragraphs$para_num <- 1:dim(cc_paragraphs)[1]
 cc_paragraphs                          %>%
   unnest_tokens(
     input = "para",
+    output = "sent",
+    token = "sentences")               -> cc_sentences
+cc_sentences$sent_num <- 1:dim(cc_sentences)[1]
+cc_sentences                           %>%
+  unnest_tokens(
+    input = "sent",
     output = "word",
-    token = "words")                   %>%
+    token = "words")                   -> cc_words
+cc_words                               %>%
   anti_join(stop_words)                %>%
-  count(word, sort=TRUE)               -> cc_words
-cc_words
+  count(word, sort=TRUE)               -> cc_word_count
 library(wordcloud)
-wordcloud(cc_words$word, cc_words$n, max.words=99)
+wordcloud(cc_word_count$word, cc_word_count$n, max.words=99)
 ```
 
 ```{r sentiment, fig.height=9}
-cc_sentiment <- sentiment_by(cc_paragraphs$para)
+sentiments                             %>%
+  filter(sentiment=="fear")            %>%
+  right_join(cc_words)                 %>%
+  mutate(fear=
+    ifelse(is.na(sentiment), 0, 1))    %>%
+  select(word, fear, para_num, sent_num) -> cc_fear
 
-stave_numbers <- grep("^stave", cc_paragraphs$para)
+stave_para <- grep("^stave", cc_paragraphs$para)
+stave_sent <- grep("^stave", cc_sentences$sent)
 stave_text <- c(
-  "Stave 1-Marley's Ghost", 
-  "Stave 2-The First of the Three Spirits",
-  "Stave 3-The Second of the Three Spirits",
-  "Stave 4-The Last of the Spirits",
-  "Stave 5-The End of It")
-stave_labels <- data.frame(x=stave_numbers, y=-0.5, text=stave_text)
-cc_sentiment                            %>%
-  ggplot(aes(element_id, ave_sentiment)) +
+  "Stave 1\nMarley's\nGhost", 
+  "Stave 2\nThe First\nof the\nThree\nSpirits",
+  "Stave 3\nThe Second\nof the\nThree\nSpirits",
+  "Stave 4\nThe Last\nof the\nSpirits",
+  "Stave 5\nThe End\nof It")
+para_labels <- data.frame(x=stave_para, y=-0.5, text=stave_text)
+sent_labels <- data.frame(x=stave_sent, y=-0.5, text=stave_text)
+cc_fear                                 %>%
+  group_by(para_num)                    %>%
+  summarize(avg_fear=mean(fear))        %>%
+  ggplot(aes(para_num, avg_fear))        +
     scale_x_reverse(
-      breaks=stave_labels$x,
+      breaks=para_labels$x,
       minor=NULL)                        +
     scale_y_continuous(position="right") +
     xlab("Paragraph")                    +
-    ylab("Sentiment")                    +
+    ylab("Sentiment (fear)")             +
     coord_flip()                         +
     geom_point(color="gray")             +
     geom_smooth(span = 0.1, se = FALSE)  +
-    geom_text(data=stave_labels, aes(x, y, label=text), vjust=1) 
+    geom_text(data=para_labels, aes(x, y, label=text), vjust=1, hjust=0) 
   
 ```
 
