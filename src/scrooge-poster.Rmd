@@ -1,0 +1,253 @@
+---
+title: "Ebenezer Scrooge, Data Scientist"
+author: "Charles Dickens^1^, Steve Simon^2^"
+institute: "1. Wellington House Academy; 2. University of Missouri-Kansas City"
+date: "2018-11-30"
+references:
+  - id: R-base
+    author:
+    - family: "R Core Team"
+      given: ""
+    title: 'R: A Language and Environment for Statistical Computing'
+    issued:
+      year: 2018
+    URL: https://www.r-project.org
+output:
+  pagedown::poster_jacobs:
+    self_contained: false
+    pandoc_args: --mathjax
+---
+
+Abstract 
+================================================================================
+
+Data science is a new and exciting discipline that touches many academic departments. It draws upon the strengths of Computer Science and Statistics and has been used successfully in Business, Education, Medicine, and Science. We need to promote data science early, at the undergraduate and high school level. Unfortunately, many of the applications of data science require specialized content knowlege and/or advanced mathematical and programming skills.
+
+Text mining is an example of data science that is easily accessible at any level of education, requires no mathematics beyond basic counting, and can be easily programmed in any language. It uses simple graphical summaries. It allows for simple improvements and customization. Most importantly, it can be applied to areas where students already have a high level of familiarity.
+
+This poster shows a simple application of text mining to a popular and well-known book, A Christmas Carol, written by Charles Dickens.
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+
+Introduction
+================================================================================
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+9
+
+8
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+
+Materials
+================================================================================
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+
+Methods
+================================================================================
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+
+Important Result
+================================================================================
+
+::: {.figure-example}
+Placeholder  
+~~~~~~~  
+
+Figure 2: Figure caption.
+:::
+
+0
+
+9
+
+8
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+
+Mathematical Section
+================================================================================
+
+0
+
+9
+
+8
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+Results
+================================================================================
+
+0
+
+9
+
+8
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+9
+
+8
+
+7
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+
+Conclusion
+================================================================================
+
+6
+
+5
+
+4
+
+3
+
+2
+
+1
+
+
+References
+================================================================================
+
+<div id="refs">
+
+Aerts HJWL. Data Science in Radiology: A Path Forward. Clin Cancer Res. 2017;24(3):532–534. doi:10.1158/1078-0432.CCR-17-2804
+
+Mduma N, Kalegele K, Machuve D. A Survey of Machine Learning Approaches and Techniques for Student Dropout Prediction. Data Science Journal. 2019;18(1):14. DOI: http://doi.org/10.5334/dsj-2019-014
+
+R Core Team (2017). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL:  https://www.R-project.org/.
+
+</div>
+
+
+
+
+Authors' contributions
+================================================================================
+
+Charles Dickens provided the raw data. Steve Simon analyzed the data and produced the graphs.
+
+::: {.logo-example}
+![](../images/Dickens_Gurney_head_resized.jpg)
+
+![](../images/SteveSimonPic_resized.jpg)
+
+:::
+
+

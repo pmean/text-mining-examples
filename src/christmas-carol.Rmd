@@ -5,17 +5,19 @@ date: "February 11, 2018"
 output: html_document
 ---
 
-```{r pre-processing}
-library(dplyr)
-library(magrittr)
-library(sentimentr)
-library(SnowballC)
-library(tidytext)
-library(tidyverse)
+```{r preliminaries}
+verbose_level <- TRUE
+suppressWarnings(suppressMessages(library(dplyr)))
+suppressWarnings(suppressMessages(library(magrittr)))
+suppressWarnings(suppressMessages(library(sentimentr)))
+suppressWarnings(suppressMessages(library(SnowballC)))
+suppressWarnings(suppressMessages(library(tidytext)))
+suppressWarnings(suppressMessages(library(tidyverse)))
+suppressWarnings(suppressMessages(library(wordcloud)))
 ```
 
 ```{r read-text}
-trim_introduction <- function(f, verbose=TRUE) {
+trim_introduction <- function(f, verbose=verbose_level) {
   # ^ and $ tell you that the string must start and end the line.
   # In other words, nothing else besides STAVE ONE.
   start_string <- "^STAVE ONE$"
@@ -25,7 +27,7 @@ trim_introduction <- function(f, verbose=TRUE) {
   if (length(start_line)!=1) return(f)
   return(f[start_line:n])
 }
-trim_end_comments <- function(f, verbose=TRUE) {
+trim_end_comments <- function(f, verbose=verbose_level) {
   end_string <- "Tiny Tim observed, God bless Us, Every One!"
   end_line <- grep(end_string, f)
   n <- length(f)
@@ -33,13 +35,15 @@ trim_end_comments <- function(f, verbose=TRUE) {
   if (length(end_line)!=1) return(f)
   return(f[1:end_line])
 }
-trim_duplicate_blank_lines <- function(f, verbose=TRUE) {
+trim_duplicate_blank_lines <- function(f, verbose=verbose_level) {
   n <- length(f)
   consecutive_blank_lines <- f[-n]=="" & f[-1]==""
   if (verbose) print(which(consecutive_blank_lines))
   return(f[!consecutive_blank_lines])
 }
+```
 
+```{r process}
 filename <- "https://www.gutenberg.org/files/24022/24022-0.txt"
 # cc_raw_text <- readLines(filename)
 cc_raw_text <- readLines("~/text-mining-examples/data/24022-0.txt")
@@ -47,8 +51,12 @@ cc_raw_text                            %>%
   trim_introduction                    %>%
   trim_end_comments                    %>%
   trim_duplicate_blank_lines           -> cc_trimmed_text
+```
+
+```{r display}
 n <- length(cc_trimmed_text)
 i <- sample(100:(n-100), 1)
+
 head(cc_trimmed_text, 19)
 cc_trimmed_text[i:(i+19)]
 tail(cc_trimmed_text, 19)
@@ -76,20 +84,27 @@ cc_sentences                           %>%
 cc_words                               %>%
   anti_join(stop_words)                %>%
   count(word, sort=TRUE)               -> cc_word_count
-library(wordcloud)
+```
+
+```{r wordcloud}
 wordcloud(cc_word_count$word, cc_word_count$n, max.words=99)
 ```
 
-```{r sentiment, fig.height=9}
+```{r sentiment}
 sentiments                             %>%
-  filter(sentiment=="fear")            %>%
+  filter(lexicon=="AFINN")             %>%
   right_join(cc_words)                 %>%
-  mutate(fear=
-    ifelse(is.na(sentiment), 0, 1))    %>%
-  select(word, fear, para_num, sent_num) -> cc_fear
+  add_count()                          %>%
+  mutate(word_num=row_number())        %>%
+  select(word, score, para_num, sent_num, word_num) -> cc_sentiment
+cc_sentiment$score[is.na(cc_sentiment$score)] <- 0
+```
 
-stave_para <- grep("^stave", cc_paragraphs$para)
-stave_sent <- grep("^stave", cc_sentences$sent)
+```{r labels}
+stave_rows <- grep("^stave", cc_sentiment$word)
+stave_para <- cc_sentiment$para_num[stave_rows]
+stave_sent <- cc_sentiment$sent_num[stave_rows]
+stave_word <- cc_sentiment$word_num[stave_rows]
 stave_text <- c(
   "Stave 1\nMarley's\nGhost", 
   "Stave 2\nThe First\nof the\nThree\nSpirits",
@@ -98,21 +113,30 @@ stave_text <- c(
   "Stave 5\nThe End\nof It")
 para_labels <- data.frame(x=stave_para, y=-0.5, text=stave_text)
 sent_labels <- data.frame(x=stave_sent, y=-0.5, text=stave_text)
-cc_fear                                 %>%
-  group_by(para_num)                    %>%
-  summarize(avg_fear=mean(fear))        %>%
-  ggplot(aes(para_num, avg_fear))        +
-    scale_x_reverse(
-      breaks=para_labels$x,
-      minor=NULL)                        +
-    scale_y_continuous(position="right") +
-    xlab("Paragraph")                    +
-    ylab("Sentiment (fear)")             +
+word_labels <- data.frame(x=stave_word, y=-0.5, text=stave_text)
+```
+
+```{r plot, fig.width=5, fig.height=9}
+moving_average <- function(x, k=500) {
+  as.numeric(stats::filter(x, rep(1 , k)/k))
+}
+cc_sentiment                            %>%
+  mutate(score_smooth=20*moving_average(score,500))  %>%
+  mutate(co=ifelse(score_smooth>=0, "green", "red")) -> cc_smooth
+cc_smooth %>%
+  ggplot(aes(word_num, score_smooth))          +
+    geom_line() +
+    geom_point(aes(color=co), size=0.25)                 +
+    scale_colour_manual(values = c("Green", "Red")) +
+    scale_y_continuous(position="right", breaks=0) +
+    expand_limits(y=0.5)                 +
+    xlab("Word")                         +
+    ylab("Sentiment")                    +
     coord_flip()                         +
-    geom_point(color="gray")             +
-    geom_smooth(span = 0.1, se = FALSE)  +
-    geom_text(data=para_labels, aes(x, y, label=text), vjust=1, hjust=0) 
-  
+    scale_x_reverse(breaks=stave_word, minor=NULL) +
+    geom_text(
+      data=word_labels,
+      aes(x=x, y=-5, label=stave_text), vjust=1, hjust=0) 
 ```
 
 ```{r save-everything}
