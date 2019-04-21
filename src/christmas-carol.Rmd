@@ -125,7 +125,7 @@ cc_sentiment                            %>%
   mutate(co=ifelse(score_smooth>=0, "green", "red")) -> cc_smooth
 cc_smooth %>%
   ggplot(aes(word_num, score_smooth))          +
-    geom_line() +
+    geom_line(aes(color=co)) +
     geom_point(aes(color=co), size=0.25)                 +
     scale_colour_manual(values = c("Green", "Red")) +
     scale_y_continuous(position="right", breaks=0) +
@@ -137,6 +137,11 @@ cc_smooth %>%
     geom_text(
       data=word_labels,
       aes(x=x, y=-5, label=stave_text), vjust=1, hjust=0) 
+```
+
+```{r excerpts}
+cc_trimmed_text[349:371]
+data.frame(cc_smooth[2792:2822, ])
 ```
 
 ```{r save-everything}
