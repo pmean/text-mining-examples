@@ -26,8 +26,8 @@
   <h2 class="institute">1. Wellington House Academy; 2. University of Missouri-Kansas City</h2>
 </div>
 
-<div id="abstract" class="section level1">
-<h1>Abstract</h1>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
 <p>Data science is a new and exciting discipline that touches many academic departments. It draws upon the strengths of Computer Science and Statistics and has been used successfully in Business, Education, Medicine, and Science. We need to promote data science early, at the undergraduate and high school level. Unfortunately, many of the applications of data science require specialized content knowlege and/or advanced mathematical and programming skills.</p>
 <p>Text mining is an example of data science that is easily accessible at any level of education, requires no mathematics beyond basic counting, and can be easily programmed in any language. It uses simple graphical summaries. It allows for simple improvements and customization. Most importantly, it can be applied to areas where students already have a high level of familiarity.</p>
 <p>This poster shows a simple application of text mining to a popular and well-known book, A Christmas Carol, written by Charles Dickens.</p>
@@ -39,15 +39,28 @@
 <p>2</p>
 <p>1</p>
 </div>
-<div id="introduction" class="section level1">
-<h1>Introduction</h1>
-<p>5</p>
-<p>4</p>
-<p>3</p>
-<p>2</p>
-<p>1</p>
-<p>0</p>
-<p>9</p>
+<div id="methods" class="section level1">
+<h1>Methods</h1>
+<p>The raw text for “A Christmas Carol” was downloaded from the Guttenberg Project website (www.guttenberg.org) and read using the R programming language (version 3.4.3) and the setimentr package.</p>
+<p>The actual analysis, however, does not this system and can easily be replicated. Here are the steps:</p>
+<ul>
+<li>Pre-process the data
+<ul>
+<li>Remove punctuation</li>
+<li>Convert everything to lower case</li>
+<li>Split into individual words</li>
+</ul></li>
+<li>Merge with sentiment lexicon
+<ul>
+<li>Assign zero to unmatched words</li>
+<li>Compute moving average</li>
+</ul></li>
+<li>Plot the results
+<ul>
+<li>Add labels</li>
+</ul></li>
+</ul>
+<p>There are several publicly available sentiment lexicons. These are lists of words with positive and negative sentiments.</p>
 <p>8</p>
 <p>7</p>
 <p>6</p>
@@ -57,8 +70,8 @@
 <p>2</p>
 <p>1</p>
 </div>
-<div id="raw-data" class="section level1">
-<h1>Raw data</h1>
+<div id="table-1.-raw-data" class="section level1">
+<h1>Table 1. Raw data</h1>
 <p>‘A poor excuse for picking a man’s pocket every twenty-fifth of
 December!’ said Scrooge, buttoning his greatcoat to the chin. ‘But I
 suppose you must have the whole day. Be here all the earlier next
@@ -70,43 +83,30 @@ greatcoat), went down a slide on Cornhill, at the end of a lane of boys,
 twenty times, in honour of its being Christmas Eve, and then ran home to
 Camden Town as hard as he could pelt, to play at blind man’s-buff.</p>
 </div>
-<div id="lexicon" class="section level1">
-<h1>Lexicon</h1>
-<pre><code>         word sentiment lexicon
-1     2-faced  negative    bing
-2     2-faces  negative    bing
-3          a+  positive    bing
-4    abnormal  negative    bing
-5     abolish  negative    bing
-6  abominable  negative    bing
-7  abominably  negative    bing
-8   abominate  negative    bing
-9 abomination  negative    bing</code></pre>
+<div id="table-2.-lexicon" class="section level1">
+<h1>Table 2. Lexicon</h1>
+<pre><code>        word lexicon score
+1      ruins   AFINN    -2
+2     niggas   AFINN    -5
+3 adventures   AFINN     2
+4    dubious   AFINN    -2
+5    lurking   AFINN    -1
+6    furious   AFINN    -3
+7      yeees   AFINN     2
+8       fear   AFINN    -2
+9  thwarting   AFINN    -2</code></pre>
 </div>
 <div id="major-points" class="section level1 block">
 <h1>Major points</h1>
-<div id="data-science-need-better-teaching-examples.-these-examples-need-to-be-easy-to-run-and-easy-to-relate-to." class="section level2">
-<h2>Data science need <em>better teaching examples</em>. These examples need to be <em>easy to run</em> and <em>easy to relate to</em>.</h2>
+<div id="data-science-need-better-teaching-examples-especially-if-we-want-to-reach-undergraduate-and-high-school-students.-these-examples-need-to-be-easy-to-run-and-easy-to-relate-to." class="section level2">
+<h2>Data science need <em>better teaching examples</em>, especially if we want to reach undergraduate and high school students. These examples need to be <em>easy to run</em> and <em>easy to relate to</em>.</h2>
 </div>
-<div id="the-ideal-choice-is-text-mining-because-it-requires-no-complex-mathematics-and-no-specialized-programming" class="section level2">
-<h2>The ideal choice is <em>text mining</em> because it requires <em>no complex mathematics</em> and <em>no specialized programming</em></h2>
+<div id="the-ideal-choice-is-text-mining-and-sentiment-analysis-because-it-requires-no-complex-mathematics-and-no-specialized-programming" class="section level2">
+<h2>The ideal choice is <em>text mining</em> and <em>sentiment analysis</em> because it requires <em>no complex mathematics</em> and <em>no specialized programming</em></h2>
 </div>
-<div id="the-best-data-source-for-text-mining-is-a-christmas-carol-by-charles-dickens.-it-is-universally-recognized-and-has-a-well-demarcated-plot-line." class="section level2">
-<h2>The <em>best data source</em> for text mining is “A Christmas Carol” by Charles Dickens. It is <em>universally recognized</em> and has a <em>well demarcated plot line</em>.</h2>
+<div id="the-best-data-source-for-text-mining-is-a-christmas-carol-by-charles-dickens.-this-book-is-universally-recognized-and-has-a-well-demarcated-plot-line." class="section level2">
+<h2>The <em>best data source</em> for text mining is “A Christmas Carol” by Charles Dickens. This book is <em>universally recognized</em> and has a <em>well demarcated plot line</em>.</h2>
 </div>
-</div>
-<div id="mathematical-section" class="section level1">
-<h1>Mathematical Section</h1>
-<p>0</p>
-<p>9</p>
-<p>8</p>
-<p>7</p>
-<p>6</p>
-<p>5</p>
-<p>4</p>
-<p>3</p>
-<p>2</p>
-<p>1</p>
 </div>
 <div id="results" class="section level1">
 <h1>Results</h1>
@@ -117,8 +117,55 @@ Camden Town as hard as he could pelt, to play at blind man’s-buff.</p>
 </div>
 </div>
 </div>
-<div id="processed-data" class="section level1">
-<h1>Processed data</h1>
+<div id="further-work" class="section level1">
+<h1>Further work</h1>
+<div id="limitations" class="section level2">
+<h2>Limitations</h2>
+<p>While this sentiment analysis provides some interesting results, you should encourage your students to discuss the limitations of the data analysis and steps that they might take to improve it. Some possible areas of discussion might include:</p>
+<ul>
+<li>How to handle abstract images
+<ul>
+<li>There is no doubt that Marley was dead. This must be distinctly
+understood, or nothing wonderful can come of the story I am going to
+relate.</li>
+</ul></li>
+<li>How to handle negations
+<ul>
+<li>‘It’s <strong>not convenient</strong>,’ said Scrooge, ’and it’s <strong>not fair</strong>.</li>
+</ul></li>
+<li>How to handle sarcasm
+<ul>
+<li>‘If these shadows remain unaltered by the Future none other of my race,’
+returned the Ghost, ‘will find him here. What then? If he be like to
+die, he had better do it, and decrease the surplus population.’</li>
+</ul></li>
+<li>How to handle double meanings
+<ul>
+<li>… though the Spirit’s eyes were clear and <strong>kind</strong>, he did not like to meet them.</li>
+<li>‘Would it apply to any <strong>kind</strong> of dinner on this day?’ asked Scrooge.</li>
+</ul></li>
+</ul>
+<p>These limitations (as well as approaches to address these limitations) are well undestood among the experts in text mining, but it would be a useful exercise to see if your students could recognize these limitations on their own and see what suggestions they might offer to fix things.</p>
+</div>
+<div id="extend-to-other-texts" class="section level2">
+<h2>Extend to other texts</h2>
+<p>There are many freely available text sources that are just as easy to conduct sentiment analysis on. Here are some examples.</p>
+<ul>
+<li>Psalms. There are a wide range of emotions in individual psalms ranging from lamentations to thanksgiving, from curses of the enemy to praises of God.</li>
+<li>Donald Trump’s twitter feed. Love him or hate him, President Trump has provided a range of emotions in his tweets, and these correlate strongly with key events during his presidency.</li>
+</ul>
+<p>8</p>
+<p>7</p>
+<p>6</p>
+<p>5</p>
+<p>4</p>
+<p>3</p>
+<p>2</p>
+<p>1</p>
+</div>
+</div>
+<div id="table-3.-processed-data" class="section level1">
+<h1>Table 3. Processed data</h1>
 <pre><code>     word score word_num score_smooth
 1       a     0     2892   -0.3491272
 2    poor    -2     2893   -0.3491272

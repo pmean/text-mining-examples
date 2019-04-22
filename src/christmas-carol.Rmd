@@ -140,7 +140,7 @@ cc_smooth %>%
       data=word_labels,
       aes(x=x, y=-1.5*ymax, label=stave_text), vjust=1, hjust=0) -> g
 g
-png(filename="../data/cc_sentiment.png", width=480, height=720)
+png(filename="../data/cc_sentiment.png", width=640, height=960)
 g
 dev.off()
 ```
@@ -148,6 +148,13 @@ dev.off()
 ```{r excerpts}
 cc_trimmed_text[349:371]
 data.frame(cc_smooth[2792:2822, ])
+
+sentiments %>%
+  filter(lexicon=="AFINN") %>%
+  select(word, lexicon, score) %>%
+  sample_n(size=9) %>%
+  data.frame -> sample_sentiments
+
 ```
 
 ```{r save-everything}

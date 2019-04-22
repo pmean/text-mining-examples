@@ -18,7 +18,7 @@ output:
     pandoc_args: --mathjax
 ---
 
-Abstract 
+Introduction 
 ================================================================================
 
 Data science is a new and exciting discipline that touches many academic departments. It draws upon the strengths of Computer Science and Statistics and has been used successfully in Business, Education, Medicine, and Science. We need to promote data science early, at the undergraduate and high school level. Unfortunately, many of the applications of data science require specialized content knowlege and/or advanced mathematical and programming skills.
@@ -42,22 +42,24 @@ This poster shows a simple application of text mining to a popular and well-know
 1
 
 
-Introduction
+Methods
 ================================================================================
 
-5
+The raw text for "A Christmas Carol" was downloaded from the Guttenberg Project website (www.guttenberg.org) and read using the R programming language (version 3.4.3) and the setimentr package.
 
-4
+The actual analysis, however, does not this system and can easily be replicated. Here are the steps:
 
-3
+* Pre-process the data
+  + Remove punctuation
+  + Convert everything to lower case
+  + Split into individual words
+* Merge with sentiment lexicon
+  + Assign zero to unmatched words
+  + Compute moving average
+* Plot the results
+  + Add labels
 
-2
-
-1
-
-0
-
-9
+There are several publicly available sentiment lexicons. These are lists of words with positive and negative sentiments.
 
 8
 
@@ -76,7 +78,7 @@ Introduction
 1
 
 
-Raw data
+Table 1. Raw data
 ================================================================================
 
 ```{r raw-data, echo=FALSE, comment=""}
@@ -104,28 +106,59 @@ twenty times, in honour of its being Christmas Eve, and then ran home to
 Camden Town as hard as he could pelt, to play at blind man's-buff.
 
 
-Lexicon
+Table 2. Lexicon
 ================================================================================
 
 ```{r lexicon, echo=FALSE, comment=""}
-data.frame(sentiments[sentiments$lexicon=="bing", ][1:9, 1:3])
+sample_sentiments
 ```
 
 Major points {.block}
 ================================================================================
 
-## Data science need *better teaching examples*. These examples need to be *easy to run* and *easy to relate to*.
+## Data science need *better teaching examples*, especially if we want to reach undergraduate and high school students. These examples need to be *easy to run* and *easy to relate to*.
 
-## The ideal choice is *text mining* because it requires *no complex mathematics* and *no specialized programming*
+## The ideal choice is *text mining*  and *sentiment analysis* because it requires *no complex mathematics* and *no specialized programming*
 
-## The *best data source* for text mining is "A Christmas Carol" by Charles Dickens. It is *universally recognized* and has a *well demarcated plot line*.
+## The *best data source* for text mining is "A Christmas Carol" by Charles Dickens. This book is *universally recognized* and has a *well demarcated plot line*.
 
-Mathematical Section
+Results
 ================================================================================
 
-0
+::: {.figure-example}
+![Figure 1](../data/cc_sentiment.png)
+:::
 
-9
+
+Further work
+================================================================================
+
+## Limitations
+
+While this sentiment analysis provides some interesting results, you should encourage your students to discuss the limitations of the data analysis and steps that they might take to improve it. Some possible areas of discussion might include:
+
+* How to handle abstract images
+  + There is no doubt that Marley was dead. This must be distinctly
+understood, or nothing wonderful can come of the story I am going to
+relate.
+* How to handle negations 
+  + 'It's **not convenient**,' said Scrooge, 'and it's **not fair**.
+* How to handle sarcasm
+  + 'If these shadows remain unaltered by the Future none other of my race,'
+returned the Ghost, 'will find him here. What then? If he be like to
+die, he had better do it, and decrease the surplus population.'
+* How to handle double meanings
+  + ... though the Spirit's eyes were clear and **kind**, he did not like to meet them.
+  + 'Would it apply to any **kind** of dinner on this day?' asked Scrooge.
+
+These limitations (as well as approaches to address these limitations) are well undestood among the experts in text mining, but it would be a useful exercise to see if your students could recognize these limitations on their own and see what suggestions they might offer to fix things.
+
+## Extend to other texts
+
+There are many freely available text sources that are just as easy to conduct sentiment analysis on. Here are some examples.
+
+* Psalms. There are a wide range of emotions in individual psalms  ranging from lamentations to thanksgiving, from curses of the enemy to praises of God.
+* Donald Trump's twitter feed. Love him or hate him, President Trump has provided a range of emotions in his tweets, and these correlate strongly with key events during his presidency.
 
 8
 
@@ -143,16 +176,7 @@ Mathematical Section
 
 1
 
-Results
-================================================================================
-
-::: {.figure-example}
-![Figure 1](../data/cc_sentiment.png)
-:::
-
-
-
-Processed data
+Table 3. Processed data
 ================================================================================
 
 ```{r processed-data, echo=FALSE, comment=""}
