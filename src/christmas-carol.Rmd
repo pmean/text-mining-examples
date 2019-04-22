@@ -54,6 +54,7 @@ cc_raw_text                            %>%
 ```
 
 ```{r display}
+set.seed(142857)
 n <- length(cc_trimmed_text)
 i <- sample(100:(n-100), 1)
 
@@ -135,12 +136,11 @@ cc_smooth %>%
     coord_flip()                         +
     theme(legend.position="none")        +
     scale_x_reverse(breaks=stave_word, minor=NULL) +
-    geom_text(x=2892, y=0, label=cc_trimmed_text[353]) +
-    geom_text(
+    geom_label(
       data=word_labels,
-      aes(x=x, y=-1.5*ymax, label=stave_text), vjust=1, hjust=0) -> g
+      aes(x=x, y=-1.5*ymax, label=stave_text), size=6, vjust=1, hjust=0) -> g
 g
-png(filename="../data/cc_sentiment.png", width=640, height=960)
+png(filename="../data/cc_sentiment.png", width=800, height=800)
 g
 dev.off()
 ```

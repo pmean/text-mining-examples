@@ -21,33 +21,26 @@ output:
 Introduction 
 ================================================================================
 
-Data science is a new and exciting discipline that touches many academic departments. It draws upon the strengths of Computer Science and Statistics and has been used successfully in Business, Education, Medicine, and Science. We need to promote data science early, at the undergraduate and high school level. Unfortunately, many of the applications of data science require specialized content knowlege and/or advanced mathematical and programming skills.
+The recent formation of the UMKC Institute for Data Education, Analytics, and Science (IDEAS) is a recognition of that data science touches many academic departments. It draws upon the strengths of Computer Science and Statistics and has been used successfully in Business, Education, Medicine, and Science. We need to promote data science early, at the undergraduate and high school level. Unfortunately, many of the applications of data science require specialized content knowlege and/or advanced mathematical and programming skills.
 
-Text mining is an example of data science that is easily accessible at any level of education, requires no mathematics beyond basic counting, and can be easily programmed in any language. It uses simple graphical summaries. It allows for simple improvements and customization. Most importantly, it can be applied to areas where students already have a high level of familiarity.
+Senitment analysis, a form of text mining is an example of data science that is easily accessible at any level of education, requires no mathematics beyond basic counting, and can be easily programmed in any language. It uses simple graphical summaries. It allows for simple improvements and customization. Most importantly, it can be applied to areas where students already have a high level of familiarity.
 
-This poster shows a simple application of text mining to a popular and well-known book, A Christmas Carol, written by Charles Dickens.
+This poster shows a simple application of sentiment analysis to a popular and well-known book, *A Christmas Carol*, written by Charles Dickens. The book is divided into five easily recognized sections:
 
-7
+* Stave 1. Marley's Ghost, 
+* Stave 2 The First of the Three Spirits,
+* Stave 3 The Second of the Three Spirits,
+* Stave 4 The Last of the Spirits, and
+* Stave 5 The End of It.
 
-6
-
-5
-
-4
-
-3
-
-2
-
-1
-
+This poster will show how this sentiment analysis of *A Christmas Carol* was conducted (hint: it was very easy) and suggest some enhancements and extensions that you should encourage your students to consider.
 
 Methods
 ================================================================================
 
-The raw text for "A Christmas Carol" was downloaded from the Guttenberg Project website (www.guttenberg.org) and read using the R programming language (version 3.4.3) and the setimentr package.
+The raw text for *A Christmas Carol* was downloaded from the Guttenberg Project website (www.guttenberg.org) and analyzed using the R programming language (version 3.4.3) and the AFINN sentiment lexicon (github.com/fnielsen/afinn/tree/master/afinn/data).
 
-The actual analysis, however, does not this system and can easily be replicated. Here are the steps:
+The actual analysis, however, does not require R and can easily be replicated in any system. Here are the steps:
 
 * Pre-process the data
   + Remove punctuation
@@ -55,30 +48,14 @@ The actual analysis, however, does not this system and can easily be replicated.
   + Split into individual words
 * Merge with sentiment lexicon
   + Assign zero to unmatched words
-  + Compute moving average
+  + Smooth the data with a moving average
 * Plot the results
   + Add labels
 
-There are several publicly available sentiment lexicons. These are lists of words with positive and negative sentiments.
-
-8
-
-7
-
-6
-
-5
-
-4
-
-3
-
-2
-
-1
+You can find the code that produced this analysis and this poster on my github site (github.com/pmean/text-mining-examples).
 
 
-Table 1. Raw data
+Table 1. Pre-processed data
 ================================================================================
 
 ```{r raw-data, echo=FALSE, comment=""}
@@ -91,96 +68,54 @@ suppressWarnings(suppressMessages(library(tidyverse)))
 suppressWarnings(suppressMessages(library(wordcloud)))
 load("../data/christmas-carol.RData")
 # cat(cc_trimmed_text[353:359], sep="\n")
+data.frame(cc_smooth[1013:1025, c(1, 5)])
 ```
-
-'A poor excuse for picking a man's pocket every twenty-fifth of
-December!' said Scrooge, buttoning his greatcoat to the chin. 'But I
-suppose you must have the whole day. Be here all the earlier next
-morning.'
-
-The clerk promised that he would; and Scrooge walked out with a growl.
-The office was closed in a twinkling, and the clerk, with the long ends
-of his white comforter dangling below his waist (for he boasted no
-greatcoat), went down a slide on Cornhill, at the end of a lane of boys,
-twenty times, in honour of its being Christmas Eve, and then ran home to
-Camden Town as hard as he could pelt, to play at blind man's-buff.
-
 
 Table 2. Lexicon
 ================================================================================
 
 ```{r lexicon, echo=FALSE, comment=""}
-sample_sentiments
+# sample_sentiments
+data.frame(sentiments[sentiments$lexicon=="AFINN", ][1:13, c(1, 3, 4)])
 ```
 
-Major points {.block}
+Major points 
 ================================================================================
 
-## Data science need *better teaching examples*, especially if we want to reach undergraduate and high school students. These examples need to be *easy to run* and *easy to relate to*.
+## Data science needs *better teaching examples*, especially if we want to reach undergraduate and high school students. These examples need to be *easy to run* and *easy to relate to*.
 
 ## The ideal choice is *text mining*  and *sentiment analysis* because it requires *no complex mathematics* and *no specialized programming*
 
-## The *best data source* for text mining is "A Christmas Carol" by Charles Dickens. This book is *universally recognized* and has a *well demarcated plot line*.
+## The *best data source* for text mining is *A Christmas Carol* by Charles Dickens. This book is *universally recognized* and has a *well demarcated plot line*.
 
-Results
+Figure 1. Sentiment graph
 ================================================================================
 
 ::: {.figure-example}
-![Figure 1](../data/cc_sentiment.png)
+![](../data/cc_sentiment.png)
 :::
 
 
-Further work
+Limitations
 ================================================================================
 
-## Limitations
+While interesting, there are serious limitations to sentiment analysis. While these limitations and efforts to overcome them as well known in the text mining community, you should encourage your students identify them independently. Some possible areas of discussion might include:
 
-While this sentiment analysis provides some interesting results, you should encourage your students to discuss the limitations of the data analysis and steps that they might take to improve it. Some possible areas of discussion might include:
-
-* How to handle abstract images
-  + There is no doubt that Marley was dead. This must be distinctly
-understood, or nothing wonderful can come of the story I am going to
-relate.
 * How to handle negations 
   + 'It's **not convenient**,' said Scrooge, 'and it's **not fair**.
-* How to handle sarcasm
-  + 'If these shadows remain unaltered by the Future none other of my race,'
-returned the Ghost, 'will find him here. What then? If he be like to
-die, he had better do it, and decrease the surplus population.'
 * How to handle double meanings
   + ... though the Spirit's eyes were clear and **kind**, he did not like to meet them.
   + 'Would it apply to any **kind** of dinner on this day?' asked Scrooge.
+* How to handle sarcasm
+  + 'If these shadows remain unaltered by the Future none other of my race,' returned the Ghost, 'will find him here. What then? If he be like to die, **he had better do it, and decrease the surplus population**.'
+* How to handle abstract images and symbols
+  + There is no doubt that **Marley was dead**. This must be distinctly understood, or nothing wonderful can come of the story I am going to relate.
 
-These limitations (as well as approaches to address these limitations) are well undestood among the experts in text mining, but it would be a useful exercise to see if your students could recognize these limitations on their own and see what suggestions they might offer to fix things.
-
-## Extend to other texts
-
-There are many freely available text sources that are just as easy to conduct sentiment analysis on. Here are some examples.
-
-* Psalms. There are a wide range of emotions in individual psalms  ranging from lamentations to thanksgiving, from curses of the enemy to praises of God.
-* Donald Trump's twitter feed. Love him or hate him, President Trump has provided a range of emotions in his tweets, and these correlate strongly with key events during his presidency.
-
-8
-
-7
-
-6
-
-5
-
-4
-
-3
-
-2
-
-1
-
-Table 3. Processed data
+Table 3. Merged data
 ================================================================================
 
 ```{r processed-data, echo=FALSE, comment=""}
-data.frame(cc_smooth[2892:2897, c(1, 2, 5, 6)])
+data.frame(cc_smooth[1013:1025, c(1, 5, 2)])
 ```
 
 Authors' contributions
@@ -189,26 +124,32 @@ Authors' contributions
 Charles Dickens provided the raw data. Steve Simon analyzed the data and produced the graphs.
 
 ::: {.logo-example}
-![](../images/Dickens_Gurney_head_resized.png)
+![](../images/Dickens_Gurney_head_resized.jpg)
 
-![](../images/SteveSimonPic_resized.png)
+![](../images/SteveSimonPic_resized.jpg)
 
 :::
 
 
-References
+Extensions
 ================================================================================
 
-<div id="refs">
+The graph shown to the left has a few landmarks shown, but there are other (and better) ways to orient the peaks and valleys in sentiment to events in the book.
 
-Aerts HJWL. Data Science in Radiology: A Path Forward. Clin Cancer Res. 2017;24(3):532–534. doi:10.1158/1078-0432.CCR-17-2804
+* Illustrations
+* Famous quotes
+* First mention of key characters
 
-Mduma N, Kalegele K, Machuve D. A Survey of Machine Learning Approaches and Techniques for Student Dropout Prediction. Data Science Journal. 2019;18(1):14. DOI: http://doi.org/10.5334/dsj-2019-014
+Other modifications include using different
 
-R Core Team (2017). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL:  https://www.R-project.org/.
+* sentiment lexicons, or
+* smoothing techniques
 
-</div>
+There are many freely available text sources that are just as easy to conduct sentiment analysis on. Here are some examples.
 
-
+* Harry Potter series (github.com/bradleyboehmke/harrypotter)
+* Psalms (www.gutenberg.org/cache/epub/10/pg10.txt)
+* Donald Trump's twitter feed (www.trumptwitterarchive.com/)
+* Amazon reviews (snap.stanford.edu/data/web-Amazon.html)
 
 
