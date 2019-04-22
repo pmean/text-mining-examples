@@ -121,22 +121,28 @@ moving_average <- function(x, k=500) {
   as.numeric(stats::filter(x, rep(1 , k)/k))
 }
 cc_sentiment                            %>%
-  mutate(score_smooth=20*moving_average(score,500))  %>%
+  mutate(score_smooth=20*moving_average(score, 401))  %>%
   mutate(co=ifelse(score_smooth>=0, "green", "red")) -> cc_smooth
+ymax <- max(abs(cc_smooth$score_smooth), na.rm=TRUE)
 cc_smooth %>%
   ggplot(aes(word_num, score_smooth))          +
-    geom_line(aes(color=co)) +
-    geom_point(aes(color=co), size=0.25)                 +
+    geom_point(aes(color=co), size=0.25, shape=3)   +
     scale_colour_manual(values = c("Green", "Red")) +
     scale_y_continuous(position="right", breaks=0) +
-    expand_limits(y=0.5)                 +
+    expand_limits(y=1.5*c(-ymax, ymax))              +
     xlab("Word")                         +
     ylab("Sentiment")                    +
     coord_flip()                         +
+    theme(legend.position="none")        +
     scale_x_reverse(breaks=stave_word, minor=NULL) +
+    geom_text(x=2892, y=0, label=cc_trimmed_text[353]) +
     geom_text(
       data=word_labels,
-      aes(x=x, y=-5, label=stave_text), vjust=1, hjust=0) 
+      aes(x=x, y=-1.5*ymax, label=stave_text), vjust=1, hjust=0) -> g
+g
+png(filename="../data/cc_sentiment.png", width=480, height=720)
+g
+dev.off()
 ```
 
 ```{r excerpts}

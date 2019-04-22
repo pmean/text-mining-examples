@@ -76,68 +76,49 @@ Introduction
 1
 
 
-Materials
+Raw data
 ================================================================================
 
-6
+```{r raw-data, echo=FALSE, comment=""}
+suppressWarnings(suppressMessages(library(dplyr)))
+suppressWarnings(suppressMessages(library(magrittr)))
+suppressWarnings(suppressMessages(library(sentimentr)))
+suppressWarnings(suppressMessages(library(SnowballC)))
+suppressWarnings(suppressMessages(library(tidytext)))
+suppressWarnings(suppressMessages(library(tidyverse)))
+suppressWarnings(suppressMessages(library(wordcloud)))
+load("../data/christmas-carol.RData")
+# cat(cc_trimmed_text[353:359], sep="\n")
+```
 
-5
+'A poor excuse for picking a man's pocket every twenty-fifth of
+December!' said Scrooge, buttoning his greatcoat to the chin. 'But I
+suppose you must have the whole day. Be here all the earlier next
+morning.'
 
-4
+The clerk promised that he would; and Scrooge walked out with a growl.
+The office was closed in a twinkling, and the clerk, with the long ends
+of his white comforter dangling below his waist (for he boasted no
+greatcoat), went down a slide on Cornhill, at the end of a lane of boys,
+twenty times, in honour of its being Christmas Eve, and then ran home to
+Camden Town as hard as he could pelt, to play at blind man's-buff.
 
-3
 
-2
-
-1
-
-
-Methods
+Lexicon
 ================================================================================
 
-6
+```{r lexicon, echo=FALSE, comment=""}
+data.frame(sentiments[sentiments$lexicon=="bing", ][1:9, 1:3])
+```
 
-5
-
-4
-
-3
-
-2
-
-1
-
-
-Important Result
+Major points {.block}
 ================================================================================
 
-::: {.figure-example}
-Placeholder  
-~~~~~~~  
+## Data science need *better teaching examples*. These examples need to be *easy to run* and *easy to relate to*.
 
-Figure 2: Figure caption.
-:::
+## The ideal choice is *text mining* because it requires *no complex mathematics* and *no specialized programming*
 
-0
-
-9
-
-8
-
-7
-
-6
-
-5
-
-4
-
-3
-
-2
-
-1
-
+## The *best data source* for text mining is "A Christmas Carol" by Charles Dickens. It is *universally recognized* and has a *well demarcated plot line*.
 
 Mathematical Section
 ================================================================================
@@ -165,61 +146,30 @@ Mathematical Section
 Results
 ================================================================================
 
-0
-
-9
-
-8
-
-7
-
-6
-
-5
-
-4
-
-3
-
-2
-
-1
-
-0
-
-9
-
-8
-
-7
-
-6
-
-5
-
-4
-
-3
-
-2
-
-1
+::: {.figure-example}
+![Figure 1](../data/cc_sentiment.png)
+:::
 
 
-Conclusion
+
+Processed data
 ================================================================================
 
-6
+```{r processed-data, echo=FALSE, comment=""}
+data.frame(cc_smooth[2892:2897, c(1, 2, 5, 6)])
+```
 
-5
+Authors' contributions
+================================================================================
 
-4
+Charles Dickens provided the raw data. Steve Simon analyzed the data and produced the graphs.
 
-3
+::: {.logo-example}
+![](../images/Dickens_Gurney_head_resized.png)
 
-2
+![](../images/SteveSimonPic_resized.png)
 
-1
+:::
 
 
 References
@@ -236,18 +186,5 @@ R Core Team (2017). R: A language and environment for statistical computing. R F
 </div>
 
 
-
-
-Authors' contributions
-================================================================================
-
-Charles Dickens provided the raw data. Steve Simon analyzed the data and produced the graphs.
-
-::: {.logo-example}
-![](../images/Dickens_Gurney_head_resized.jpg)
-
-![](../images/SteveSimonPic_resized.jpg)
-
-:::
 
 
