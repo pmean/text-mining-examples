@@ -21,17 +21,17 @@ output:
 Introduction 
 ================================================================================
 
-The recent formation of the UMKC Institute for Data Education, Analytics, and Science (IDEAS) is a recognition of that data science touches many academic departments. It draws upon the strengths of Computer Science and Statistics and has been used successfully in Business, Education, Medicine, and Science. We need to promote data science early, at the undergraduate and high school level. Unfortunately, many of the applications of data science require specialized content knowlege and/or advanced mathematical and programming skills.
+The recent formation of the UMKC Institute for Data Education, Analytics, and Science (IDEAS) is a recognition that data science touches many academic departments. It draws upon the strengths of Computer Science and Statistics and has been used successfully in Business, Education, Medicine, and Science. We need to promote data science early, at the undergraduate and high school level. Unfortunately, many of the applications of data science require specialized content knowlege and/or advanced mathematical and programming skills.
 
-Senitment analysis, a form of text mining is an example of data science that is easily accessible at any level of education, requires no mathematics beyond basic counting, and can be easily programmed in any language. It uses simple graphical summaries. It allows for simple improvements and customization. Most importantly, it can be applied to areas where students already have a high level of familiarity.
+Senitment analysis, a form of text mining, is an branch of data science that is accessible at any level of education, requires no mathematics beyond basic counting, and can be easily programmed in any language. It uses simple graphical summaries. It allows for simple improvements and customization. Most importantly, it can be applied to areas where students already have a high level of familiarity.
 
 This poster shows a simple application of sentiment analysis to a popular and well-known book, *A Christmas Carol*, written by Charles Dickens. The book is divided into five easily recognized sections:
 
 * Stave 1. Marley's Ghost, 
-* Stave 2 The First of the Three Spirits,
-* Stave 3 The Second of the Three Spirits,
-* Stave 4 The Last of the Spirits, and
-* Stave 5 The End of It.
+* Stave 2. The First of the Three Spirits,
+* Stave 3. The Second of the Three Spirits,
+* Stave 4. The Last of the Spirits, and
+* Stave 5. The End of It.
 
 This poster will show how this sentiment analysis of *A Christmas Carol* was conducted (hint: it was very easy) and suggest some enhancements and extensions that you should encourage your students to consider.
 
@@ -68,7 +68,7 @@ suppressWarnings(suppressMessages(library(tidyverse)))
 suppressWarnings(suppressMessages(library(wordcloud)))
 load("../data/christmas-carol.RData")
 # cat(cc_trimmed_text[353:359], sep="\n")
-data.frame(cc_smooth[1013:1025, c(1, 5)])
+data.frame(cc_smooth[1013:1024, c(1, 5)])
 ```
 
 Table 2. Lexicon
@@ -76,15 +76,15 @@ Table 2. Lexicon
 
 ```{r lexicon, echo=FALSE, comment=""}
 # sample_sentiments
-data.frame(sentiments[sentiments$lexicon=="AFINN", ][1:13, c(1, 3, 4)])
+data.frame(sentiments[sentiments$lexicon=="AFINN", ][1:12, c(1, 3, 4)])
 ```
 
 Major points 
 ================================================================================
 
-## Data science needs *better teaching examples*, especially if we want to reach undergraduate and high school students. These examples need to be *easy to run* and *easy to relate to*.
+## Data science needs *great teaching examples*, especially if you want to reach undergraduate and high school students. These examples need to be *easy to run* and *easy to relate to*.
 
-## The ideal choice is *text mining*  and *sentiment analysis* because it requires *no complex mathematics* and *no specialized programming*
+## The ideal methodology is *text mining*  and *sentiment analysis* because it requires *no complex mathematics* and *no specialized programming*
 
 ## The *best data source* for text mining is *A Christmas Carol* by Charles Dickens. This book is *universally recognized* and has a *well demarcated plot line*.
 
@@ -115,7 +115,7 @@ Table 3. Merged data
 ================================================================================
 
 ```{r processed-data, echo=FALSE, comment=""}
-data.frame(cc_smooth[1013:1025, c(1, 5, 2)])
+data.frame(cc_smooth[1013:1024, c(1, 5, 2)])
 ```
 
 Authors' contributions
@@ -134,16 +134,16 @@ Charles Dickens provided the raw data. Steve Simon analyzed the data and produce
 Extensions
 ================================================================================
 
-The graph shown to the left has a few landmarks shown, but there are other (and better) ways to orient the peaks and valleys in sentiment to events in the book.
+The graph shown to the left has a few landmarks shown, but there are other (and better) ways to orient the peaks and valleys in sentiment to events in the book:
 
-* Illustrations
-* Famous quotes
-* First mention of key characters
+* illustrations,
+* famous quotes, or
+* first mention of key characters.
 
 Other modifications include using different
 
 * sentiment lexicons, or
-* smoothing techniques
+* smoothing techniques.
 
 There are many freely available text sources that are just as easy to conduct sentiment analysis on. Here are some examples.
 
